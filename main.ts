@@ -3,7 +3,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         funling.vy = -150
     }
 })
-let mySprite: Sprite = null
 let funling: Sprite = null
 tiles.loadMap(tiles.createMap(tilemap`level2`))
 funling = sprites.create(img`
@@ -147,7 +146,7 @@ scene.setBackgroundImage(img`
     6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
     6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
     `)
-tiles.placeOnRandomTile(mySprite, assets.tile`myTile2`)
+tiles.placeOnRandomTile(funling, assets.tile`myTile2`)
 game.onUpdate(function () {
     if (funling.vy < 0) {
         funling.setImage(img`
