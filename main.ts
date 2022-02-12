@@ -1,3 +1,6 @@
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile19`, function (sprite, location) {
+    game.over(false)
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (funling.vy == 0) {
         funling.vy = -150
@@ -126,6 +129,10 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7`, function (sprite, l
         ffffffffffffffffffffffffffffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeecccccccccceeeeeeeeeeeeeeeeeeeeeeeeeeeffffffffffffffffffffeeeeeeeeeeeeeeeeeeeeeeeeeeefffffffffffffffff
         ffffffffffffffffffffffffffffffeeeeeeeeeeeeeeeeeeeeeeeeeeeeecccccccccceeeeeeeeeeeeeeeeeeeeeeeeeeeffffffffffffffffffffeeeeeeeeeeeeeeeeeeeeeeeeeeefffffffffffffffff
         `)
+    scene.setBackgroundColor(15)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile17`, function (sprite, location) {
+    game.over(false)
 })
 function hide_start_position_and_spawn_player_in () {
     tiles.placeOnRandomTile(funling, assets.tile`myTile2`)
@@ -141,22 +148,31 @@ function set_all_other_admin_objects_invisible () {
         tiles.setTileAt(value, assets.tile`transparency16`)
     }
 }
+function level_select () {
+	
+}
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
+    game.over(false)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile11`, function (sprite, location) {
+    game.over(false)
+})
 let funling: Sprite = null
-tiles.loadMap(tiles.createMap(tilemap`level5`))
+tiles.loadMap(tiles.createMap(tilemap`level14`))
 funling = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
-    . . . 4 4 7 7 7 7 7 7 . . . . . 
-    . . . 4 4 4 1 1 1 7 7 . . . . . 
-    . . . 4 4 4 4 f 1 7 7 . . . . . 
-    . . . 4 4 4 4 1 1 7 7 . . . . . 
-    . . . 4 4 4 4 4 7 7 7 . . . . . 
-    . . . 4 4 4 4 4 7 7 7 . . . . . 
-    . . . 4 6 4 4 4 4 7 7 . . . . . 
-    . . . 4 4 6 6 4 4 4 7 . . . . . 
-    . . . 4 4 4 4 4 4 4 4 . . . . . 
+    . . . 4 4 7 7 7 7 7 7 7 . . . . 
+    . . . 4 4 4 1 1 1 7 7 7 . . . . 
+    . . . 4 4 4 4 f 1 7 7 7 . . . . 
+    . . . 4 4 4 4 1 1 7 7 7 . . . . 
+    . . . 4 4 4 4 4 7 7 7 7 . . . . 
+    . . . 4 4 4 4 4 7 7 7 7 . . . . 
+    . . . 4 6 4 4 4 4 7 7 7 . . . . 
+    . . . 4 4 6 6 4 4 4 7 7 . . . . 
+    . . . 4 4 4 4 4 4 4 4 7 . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -294,15 +310,15 @@ game.onUpdate(function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            . . . 4 4 7 7 7 7 7 7 . . . . . 
-            . . . 4 4 4 1 1 1 7 7 . . . . . 
-            . . . 4 4 4 4 f 1 7 7 . . . . . 
-            . . . 4 4 4 4 1 1 7 7 . . . . . 
-            . . . 4 4 4 4 4 7 7 7 . . . . . 
-            . . . 4 4 4 4 4 7 7 7 . . . . . 
-            . . . 4 6 4 4 4 4 7 7 . . . . . 
-            . . . 4 4 6 6 4 4 4 7 . . . . . 
-            . . . 4 4 4 4 4 4 4 4 . . . . . 
+            . . . 4 4 7 7 7 7 7 7 7 . . . . 
+            . . . 4 4 4 1 1 1 7 7 7 . . . . 
+            . . . 4 4 4 4 f 1 7 7 7 . . . . 
+            . . . 4 4 4 4 1 1 7 7 7 . . . . 
+            . . . 4 4 4 4 4 7 7 7 7 . . . . 
+            . . . 4 4 4 4 4 7 7 7 7 . . . . 
+            . . . 4 6 4 4 4 4 7 7 7 . . . . 
+            . . . 4 4 6 6 4 4 4 7 7 . . . . 
+            . . . 4 4 4 4 4 4 4 4 7 . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -313,15 +329,15 @@ game.onUpdate(function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            . . . 4 4 7 7 7 7 7 7 . . . . . 
-            . . . 4 4 4 1 1 1 7 7 . . . . . 
-            . . . 4 4 4 4 f 1 7 7 . . . . . 
-            . . . 4 4 4 4 1 1 7 7 . . . . . 
-            . . . 4 4 4 4 4 7 7 7 . . . . . 
-            . . . 4 4 4 4 4 7 7 7 . . . . . 
-            . . . 4 6 4 4 4 4 7 7 . . . . . 
-            . . . 4 4 6 6 4 4 4 7 . . . . . 
-            . . . 4 4 4 4 4 4 4 4 . . . . . 
+            . . . 4 4 7 7 7 7 7 7 7 . . . . 
+            . . . 4 4 4 1 1 1 7 7 7 . . . . 
+            . . . 4 4 4 4 f 1 7 7 7 . . . . 
+            . . . 4 4 4 4 1 1 7 7 7 . . . . 
+            . . . 4 4 4 4 4 7 7 7 7 . . . . 
+            . . . 4 4 4 4 4 7 7 7 7 . . . . 
+            . . . 4 6 4 4 4 4 7 7 7 . . . . 
+            . . . 4 4 6 6 4 4 4 7 7 . . . . 
+            . . . 4 4 4 4 4 4 4 4 7 . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -332,15 +348,15 @@ game.onUpdate(function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            . . . 4 4 7 7 7 7 7 7 . . . . . 
-            . . . 4 4 4 1 1 1 7 7 . . . . . 
-            . . . 4 4 4 4 f 1 7 7 . . . . . 
-            . . . 4 4 4 4 1 1 7 7 . . . . . 
-            . . . 4 4 4 4 4 7 7 7 . . . . . 
-            . . . 4 4 4 4 4 7 7 7 . . . . . 
-            . . . 4 6 4 4 4 4 7 7 . . . . . 
-            . . . 4 4 6 6 4 4 4 7 . . . . . 
-            . . . 4 4 4 4 4 4 4 4 . . . . . 
+            . . . 4 4 7 7 7 7 7 7 7 . . . . 
+            . . . 4 4 4 1 1 1 7 7 7 . . . . 
+            . . . 4 4 4 4 f 1 7 7 7 . . . . 
+            . . . 4 4 4 4 1 1 7 7 7 . . . . 
+            . . . 4 4 4 4 4 7 7 7 7 . . . . 
+            . . . 4 4 4 4 4 7 7 7 7 . . . . 
+            . . . 4 6 4 4 4 4 7 7 7 . . . . 
+            . . . 4 4 6 6 4 4 4 7 7 . . . . 
+            . . . 4 4 4 4 4 4 4 4 7 . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -351,15 +367,15 @@ game.onUpdate(function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            . . . 4 4 7 7 7 7 7 7 . . . . . 
-            . . . 4 4 4 1 1 1 7 7 . . . . . 
-            . . . 4 4 4 4 f 1 7 7 . . . . . 
-            . . . 4 4 4 4 1 1 7 7 . . . . . 
-            . . . 4 4 4 4 4 7 7 7 . . . . . 
-            . . . 4 4 4 4 4 7 7 7 . . . . . 
-            . . . 4 6 4 4 4 4 7 7 . . . . . 
-            . . . 4 4 6 6 4 4 4 7 . . . . . 
-            . . . 4 4 4 4 4 4 4 4 . . . . . 
+            . . . 4 4 7 7 7 7 7 7 7 . . . . 
+            . . . 4 4 4 1 1 1 7 7 7 . . . . 
+            . . . 4 4 4 4 f 1 7 7 7 . . . . 
+            . . . 4 4 4 4 1 1 7 7 7 . . . . 
+            . . . 4 4 4 4 4 7 7 7 7 . . . . 
+            . . . 4 4 4 4 4 7 7 7 7 . . . . 
+            . . . 4 6 4 4 4 4 7 7 7 . . . . 
+            . . . 4 4 6 6 4 4 4 7 7 . . . . 
+            . . . 4 4 4 4 4 4 4 4 7 . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
