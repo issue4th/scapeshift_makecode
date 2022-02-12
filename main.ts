@@ -1,6 +1,33 @@
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile19`, function (sprite, location) {
-    game.over(false)
-})
+namespace SpriteKind {
+    export const campfire = SpriteKind.create()
+}
+function start_campfires () {
+    for (let temporary of sprites.allOfKind(SpriteKind.campfire)) {
+        temporary.destroy()
+    }
+    for (let location of tiles.getTilesByType(assets.tile`myTile17`)) {
+        temporary = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . b b . . . . . . . 
+            . . . . . . 8 2 2 b . . . . . . 
+            . . . . . b 2 2 2 2 b . . . . . 
+            . . . . 8 2 2 4 4 2 2 b . . . . 
+            . . . 8 2 2 4 5 5 4 2 2 b . . . 
+            . . . 2 2 4 4 5 5 4 4 2 2 . . . 
+            d d d d e e e e e d d d d d e e 
+            e e e e d d e e e e e e e e e d 
+            d e d e e e e e d d e e e d d e 
+            `, SpriteKind.campfire)
+        temporary.startEffect(effects.fire)
+        tiles.placeOnTile(temporary, location)
+    }
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (funling.vy == 0) {
         funling.vy = -150
@@ -131,7 +158,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile7`, function (sprite, l
         `)
     scene.setBackgroundColor(15)
 })
-scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile17`, function (sprite, location) {
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile18`, function (sprite, location) {
     game.over(false)
 })
 function hide_start_position_and_spawn_player_in () {
@@ -141,15 +168,12 @@ function hide_start_position_and_spawn_player_in () {
     }
 }
 function set_all_other_admin_objects_invisible () {
-    for (let value of tiles.getTilesByType(assets.tile`myTile7`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
+    for (let value2 of tiles.getTilesByType(assets.tile`myTile7`)) {
+        tiles.setTileAt(value2, assets.tile`transparency16`)
     }
-    for (let value of tiles.getTilesByType(assets.tile`myTile9`)) {
-        tiles.setTileAt(value, assets.tile`transparency16`)
+    for (let value3 of tiles.getTilesByType(assets.tile`myTile9`)) {
+        tiles.setTileAt(value3, assets.tile`transparency16`)
     }
-}
-function level_select () {
-	
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
     game.over(false)
@@ -157,6 +181,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, 
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile11`, function (sprite, location) {
     game.over(false)
 })
+let temporary: Sprite = null
 let funling: Sprite = null
 tiles.loadMap(tiles.createMap(tilemap`level14`))
 funling = sprites.create(img`
@@ -303,6 +328,7 @@ scene.setBackgroundImage(img`
     `)
 hide_start_position_and_spawn_player_in()
 set_all_other_admin_objects_invisible()
+start_campfires()
 game.onUpdate(function () {
     if (funling.vy < 0) {
         funling.setImage(img`
