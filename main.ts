@@ -1,6 +1,7 @@
 namespace SpriteKind {
     export const campfire = SpriteKind.create()
     export const key = SpriteKind.create()
+    export const secret = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     select_next_level()
@@ -11,55 +12,48 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile19`, function (sprite, 
     }
 })
 function start_campfires () {
-    for (let temporary of sprites.allOfKind(SpriteKind.campfire)) {
-        temporary.destroy()
-    }
-    for (let location of tiles.getTilesByType(assets.tile`myTile17`)) {
-        temporary = sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . b b . . . . . . . 
-            . . . . . . 8 2 2 b . . . . . . 
-            . . . . . b 2 2 2 2 b . . . . . 
-            . . . . 8 2 2 4 4 2 2 b . . . . 
-            . . . 8 2 2 4 5 5 4 2 2 b . . . 
-            . . . 2 2 4 4 5 5 4 4 2 2 . . . 
-            d d d d e e e e e d d d d d e e 
-            e e e e d d e e e e e e e e e d 
-            d e d e e e e e d d e e e d d e 
-            `, SpriteKind.campfire)
-        temporary.startEffect(effects.fire)
-        tiles.placeOnTile(temporary, location)
-    }
+    turn_marker_into_sprite(myTiles.tile19, sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . b b . . . . . . . 
+        . . . . . . 8 2 2 b . . . . . . 
+        . . . . . b 2 2 2 2 b . . . . . 
+        . . . . 8 2 2 4 4 2 2 b . . . . 
+        . . . 8 2 2 4 5 5 4 2 2 b . . . 
+        . . . 2 2 4 4 5 5 4 4 2 2 . . . 
+        d d d d e e e e e d d d d d e e 
+        e e e e d d e e e e e e e e e d 
+        d e d e e e e e d d e e e d d e 
+        `, SpriteKind.campfire))
 }
-function start_campfires2 () {
-    for (let temporary of sprites.allOfKind(SpriteKind.key)) {
+function start_secret_after_key_found () {
+    for (let temporary of sprites.allOfKind(SpriteKind.secret)) {
         temporary.destroy()
     }
-    for (let location of tiles.getTilesByType(assets.tile`myTile14`)) {
+    for (let location of tiles.getTilesByType(assets.tile`myTile28`)) {
         temporary = sprites.create(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            . . . 5 . . . . . . . . . . . . 
-            . . 5 4 5 . . . . . . . . . . . 
-            . 5 4 . 4 5 5 5 5 5 . . . . . . 
-            . 4 5 . 5 4 4 4 5 4 5 . . . . . 
-            . . 4 5 4 . . . 4 . 4 . . . . . 
-            . . . 4 . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . a a a a . . . . . . . 
+            . . . . . a . . a . . . . . . . 
+            . . . . . a . . a . . . . . . . 
+            . . . . . a a a a . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            `, SpriteKind.key)
+            . . . . . . . . . . . . . . . . 
+            `, SpriteKind.secret)
         temporary.startEffect(effects.halo)
         tiles.placeOnTile(temporary, location)
     }
@@ -203,12 +197,21 @@ function select_next_level () {
     level += 1
     select_level()
 }
+function turn_marker_into_sprite (marker_image: Image, mySprite: Sprite) {
+    for (let temporary of sprites.allOfKind(mySprite.kind())) {
+        temporary.destroy()
+    }
+    for (let location of tiles.getTilesByType(marker_image)) {
+        temporary = sprites.create(mySprite.image, mySprite.kind())
+        temporary.startEffect(effects.fire)
+        tiles.placeOnTile(temporary, location)
+    }
+}
 function create_tilemaps () {
     tilemaps = [
-    tiles.createMap(tilemap`level2`),
+    tiles.createMap(tilemap`level19`),
     tiles.createMap(tilemap`level5`),
     tiles.createMap(tilemap`level13`),
-    tiles.createMap(tilemap`level19`),
     tiles.createMap(tilemap`level10`),
     tiles.createMap(tilemap`level17`),
     tiles.createMap(tilemap`level14`)
@@ -217,6 +220,36 @@ function create_tilemaps () {
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile18`, function (sprite, location) {
     game.over(false)
 })
+function start_keys () {
+    for (let temporary of sprites.allOfKind(SpriteKind.key)) {
+        temporary.destroy()
+    }
+    for (let location of tiles.getTilesByType(assets.tile`myTile14`)) {
+        temporary = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . 5 . . . . . . . . . . . . 
+            . . 5 4 5 . . . . . . . . . . . 
+            . 5 4 . 4 5 5 5 5 5 . . . . . . 
+            . 4 5 . 5 4 4 4 5 4 5 . . . . . 
+            . . 4 5 4 . . . 4 . 4 . . . . . 
+            . . . 4 . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, SpriteKind.key)
+        temporary.startEffect(effects.halo)
+        tiles.placeOnTile(temporary, location)
+    }
+}
+function player_has_found_a_key () {
+    start_secret_after_key_found()
+}
 function hide_start_position_and_spawn_player_in () {
     tiles.placeOnRandomTile(funling, assets.tile`myTile2`)
     for (let value of tiles.getTilesByType(assets.tile`myTile2`)) {
@@ -352,15 +385,21 @@ function select_level () {
     start_campfires()
 }
 function set_all_other_admin_objects_invisible () {
-    for (let value2 of tiles.getTilesByType(assets.tile`myTile7`)) {
-        tiles.setTileAt(value2, assets.tile`transparency16`)
+    for (let temporary of tiles.getTilesByType(assets.tile`myTile7`)) {
+        tiles.setTileAt(temporary, assets.tile`transparency16`)
     }
-    for (let value3 of tiles.getTilesByType(assets.tile`myTile9`)) {
-        tiles.setTileAt(value3, assets.tile`transparency16`)
+    for (let temporary of tiles.getTilesByType(assets.tile`myTile9`)) {
+        tiles.setTileAt(temporary, assets.tile`transparency16`)
+    }
+    for (let temporary of tiles.getTilesByType(assets.tile`myTile28`)) {
+        tiles.setTileAt(temporary, assets.tile`transparency16`)
     }
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
     game.over(false)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile14`, function (sprite, location) {
+    player_has_found_a_key()
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile11`, function (sprite, location) {
     game.over(false)
