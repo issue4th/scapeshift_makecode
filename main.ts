@@ -1,8 +1,14 @@
 namespace SpriteKind {
     export const campfire = SpriteKind.create()
+    export const key = SpriteKind.create()
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile0`, function (sprite, location) {
     select_next_level()
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile19`, function (sprite, location) {
+    if (controller.A.isPressed()) {
+        funling.setVelocity(0, -20)
+    }
 })
 function start_campfires () {
     for (let temporary of sprites.allOfKind(SpriteKind.campfire)) {
@@ -31,6 +37,38 @@ function start_campfires () {
         tiles.placeOnTile(temporary, location)
     }
 }
+function start_campfires2 () {
+    for (let temporary of sprites.allOfKind(SpriteKind.key)) {
+        temporary.destroy()
+    }
+    for (let location of tiles.getTilesByType(assets.tile`myTile14`)) {
+        temporary = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . 5 . . . . . . . . . . . . 
+            . . 5 4 5 . . . . . . . . . . . 
+            . 5 4 . 4 5 5 5 5 5 . . . . . . 
+            . 4 5 . 5 4 4 4 5 4 5 . . . . . 
+            . . 4 5 4 . . . 4 . 4 . . . . . 
+            . . . 4 . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, SpriteKind.key)
+        temporary.startEffect(effects.halo)
+        tiles.placeOnTile(temporary, location)
+    }
+}
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile22`, function (sprite, location) {
+    if (controller.A.isPressed()) {
+        funling.setVelocity(0, -20)
+    }
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (funling.vy == 0) {
         funling.vy = -150
@@ -170,9 +208,10 @@ function create_tilemaps () {
     tiles.createMap(tilemap`level2`),
     tiles.createMap(tilemap`level5`),
     tiles.createMap(tilemap`level13`),
-    tiles.createMap(tilemap`level14`),
+    tiles.createMap(tilemap`level19`),
     tiles.createMap(tilemap`level10`),
-    tiles.createMap(tilemap`level17`)
+    tiles.createMap(tilemap`level17`),
+    tiles.createMap(tilemap`level14`)
     ]
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile18`, function (sprite, location) {
@@ -353,6 +392,13 @@ funling = sprites.create(img`
 select_level()
 controller.moveSprite(funling, 80, 0)
 scene.cameraFollowSprite(funling)
+game.onUpdate(function () {
+    if (funling.tileKindAt(TileDirection.Center, assets.tile`myTile21`)) {
+        controller.moveSprite(funling, 35, 0)
+    } else {
+        controller.moveSprite(funling, 80, 0)
+    }
+})
 game.onUpdate(function () {
     if (funling.vy < 0) {
         funling.setImage(img`
