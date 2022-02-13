@@ -30,6 +30,9 @@ function start_campfires () {
         e e e e d d e e e e e e e e e d 
         d e d e e e e e d d e e e d d e 
         `, SpriteKind.campfire))
+    for (let temporary of animations) {
+        temporary.startEffect(effects.fire)
+    }
 }
 function start_secret_after_key_found () {
     for (let temporary of sprites.allOfKind(SpriteKind.secret)) {
@@ -201,10 +204,12 @@ function turn_marker_into_sprite (marker_image: Image, mySprite: Sprite) {
     for (let temporary of sprites.allOfKind(mySprite.kind())) {
         temporary.destroy()
     }
+    animations = []
     for (let location of tiles.getTilesByType(marker_image)) {
         temporary = sprites.create(mySprite.image, mySprite.kind())
-        temporary.startEffect(effects.fire)
+        tiles.setTileAt(location, assets.tile`transparency16`)
         tiles.placeOnTile(temporary, location)
+        animations.push(temporary)
     }
 }
 function create_tilemaps () {
@@ -221,30 +226,31 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile18`, function (sprite, 
     game.over(false)
 })
 function start_keys () {
-    for (let temporary of sprites.allOfKind(SpriteKind.key)) {
-        temporary.destroy()
-    }
-    for (let location of tiles.getTilesByType(assets.tile`myTile14`)) {
-        temporary = sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . 5 . . . . . . . . . . . . 
-            . . 5 4 5 . . . . . . . . . . . 
-            . 5 4 . 4 5 5 5 5 5 . . . . . . 
-            . 4 5 . 5 4 4 4 5 4 5 . . . . . 
-            . . 4 5 4 . . . 4 . 4 . . . . . 
-            . . . 4 . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, SpriteKind.key)
-        temporary.startEffect(effects.halo)
-        tiles.placeOnTile(temporary, location)
+    turn_marker_into_sprite(myTiles.tile16, sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . 5 . . . . . . . . . . . . 
+        . . 5 4 5 . . . . . . . . . . . 
+        . 5 4 . 4 5 5 5 5 5 . . . . . . 
+        . 4 5 . 5 4 4 4 5 4 5 . . . . . 
+        . . 4 5 4 . . . 4 . 4 . . . . . 
+        . . . 4 . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.key))
+    for (let temporary of animations) {
+        animation.runMovementAnimation(
+        temporary,
+        animation.animationPresets(animation.bobbing),
+        2000,
+        true
+        )
     }
 }
 function player_has_found_a_key () {
@@ -383,6 +389,7 @@ function select_level () {
     hide_start_position_and_spawn_player_in()
     set_all_other_admin_objects_invisible()
     start_campfires()
+    start_keys()
 }
 function set_all_other_admin_objects_invisible () {
     for (let temporary of tiles.getTilesByType(assets.tile`myTile7`)) {
@@ -406,6 +413,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile11`, function (sprite, 
 })
 let tilemaps: tiles.WorldMap[] = []
 let temporary: Sprite = null
+let animations: Sprite[] = []
 let funling: Sprite = null
 let level = 0
 level = 0
@@ -521,4 +529,11 @@ game.onUpdate(function () {
         funling.setImage(funling.image)
     }
     funling.ay = 350
+})
+game.onUpdate(function () {
+    if (funling.tileKindAt(TileDirection.Bottom, assets.tile`myTile16`)) {
+        effects.blizzard.startScreenEffect()
+    } else {
+        effects.blizzard.endScreenEffect()
+    }
 })
