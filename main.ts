@@ -51,6 +51,11 @@ function select_next_level () {
     level += 1
     select_level()
 }
+function create_underground_tilemaps () {
+    tilemaps = [
+    tiles.createMap(tilemap`level17`)
+    ]
+}
 sprites.onOverlap(SpriteKind.Player, SpriteKind.background_changer, function (sprite, otherSprite) {
     scene.setBackgroundImage(img`
         ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
@@ -195,7 +200,8 @@ function create_tilemaps () {
     tiles.createMap(tilemap`level10`),
     tiles.createMap(tilemap`level19`),
     tiles.createMap(tilemap`level17`),
-    tiles.createMap(tilemap`level14`)
+    tiles.createMap(tilemap`level14`),
+    tiles.createMap(tilemap`level2`)
     ]
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile18`, function (sprite, location) {
@@ -227,28 +233,6 @@ function start_keys () {
         2000,
         true
         )
-    }
-}
-function player_has_found_a_key () {
-    for (let temporary of sprites.allOfKind(SpriteKind.secret)) {
-        temporary.setImage(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . a a a a . . . . . . . 
-            . . . . . a . . a . . . . . . . 
-            . . . . . a . . a . . . . . . . 
-            . . . . . a a a a . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `)
     }
 }
 function hide_start_position_and_spawn_player_in () {
@@ -511,93 +495,126 @@ function select_level () {
     start_keys()
 }
 function set_all_other_admin_objects_invisible () {
-    for (let location of tiles.getTilesByType(assets.tile`myTile29`)) {
-        tiles.placeOnTile(sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            f . . . . . . . . . . . . . . . 
-            `, SpriteKind.forest_background_changer), location)
-        tiles.setTileAt(location, assets.tile`transparency16`)
-    }
-    for (let location of tiles.getTilesByType(assets.tile`myTile7`)) {
-        tiles.placeOnTile(sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, SpriteKind.background_changer), location)
-        tiles.setTileAt(location, assets.tile`transparency16`)
-    }
-    for (let location of tiles.getTilesByType(assets.tile`myTile9`)) {
-        tiles.placeOnTile(sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, SpriteKind.dunno), location)
-        tiles.setTileAt(location, assets.tile`transparency16`)
-    }
-    for (let location of tiles.getTilesByType(assets.tile`myTile28`)) {
-        tiles.placeOnTile(sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, SpriteKind.secret), location)
+    create_marker_sprite_from_marker_image(myTiles.tile31, sprites.create(img`
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        `, SpriteKind.forest_background_changer))
+    create_marker_sprite_from_marker_image(myTiles.tile9, sprites.create(img`
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        `, SpriteKind.background_changer))
+    create_marker_sprite_from_marker_image(myTiles.tile30, sprites.create(img`
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        `, SpriteKind.secret))
+    create_marker_sprite_from_marker_image(myTiles.tile11, sprites.create(img`
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        f f f f f f f f f f f f f f f f 
+        `, SpriteKind.dunno))
+}
+function create_marker_sprite_from_marker_image (myImage: Image, mySprite: Sprite) {
+    for (let location of tiles.getTilesByType(myImage)) {
+        temporary = sprites.create(img`
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            f f f f f f f f f f f f f f f f 
+            `, mySprite.kind())
+        temporary.setFlag(SpriteFlag.Invisible, true)
+        tiles.placeOnTile(temporary, location)
         tiles.setTileAt(location, assets.tile`transparency16`)
     }
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.key, function (sprite, otherSprite) {
-    player_has_found_a_key()
+    for (let temporary of sprites.allOfKind(SpriteKind.secret)) {
+        temporary.setImage(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . a a a a . . . . . . . 
+            . . . . . a . . a . . . . . . . 
+            . . . . . a . . a . . . . . . . 
+            . . . . . a a a a . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `)
+        temporary.setFlag(SpriteFlag.Invisible, false)
+    }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
     game.over(false)
@@ -605,8 +622,8 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, 
 scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile11`, function (sprite, location) {
     game.over(false)
 })
-let tilemaps: tiles.WorldMap[] = []
 let temporary: Sprite = null
+let tilemaps: tiles.WorldMap[] = []
 let animations: Sprite[] = []
 let funling: Sprite = null
 let level = 0
